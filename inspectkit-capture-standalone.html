@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>InspectKit — Capture Form</title>
 <script>
+// ─── EMBEDDED CONFIG (standalone build) ─────────────────────────────
 // InspectKit Configuration File
 // Swap this file to rebrand the entire system for a different inspector client.
 // Do not modify inspectkit-capture.html or inspectkit-renderer.html — only this file.
@@ -28,13 +29,13 @@ const INSPECTKIT_CONFIG = {
   borderColor: "#C8D8E8",        // light blue-grey — borders and rules
 
   // ─── Inspector Credentials ───────────────────────────────────────────────
-  inspectorName: "Inspector Name",
-  inspectorLBP: "LBP XXXXXX",
-  inspectorQualifications: "Qualifications here",
-  inspectorBio: "Bio text here",
-  inspectorPhone: "",
-  inspectorEmail: "",
-  inspectorCompany: "",
+  inspectorName: "BIG SNOOP DOG",
+  inspectorLBP: "LBP 420420420",
+  inspectorQualifications: "Bachelor of Barks & Bombs",
+  inspectorBio: "13 years in the game, expert duck herder & sun chaser",
+  inspectorPhone: "021420420",
+  inspectorEmail: "snoop@inspectkit.nz",
+  inspectorCompany: "InspectKit",
   inspectorPhotoPlaceholder: true, // set false if inspector photo supplied
 
   // ─── Report Numbering ────────────────────────────────────────────────────
@@ -858,11 +859,286 @@ html, body {
 #main::-webkit-scrollbar { width: 6px; }
 #main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-/* ─── Responsive ─────────────────────────────────────────────────────── */
+/* ─── Responsive — desktop unchanged, mobile additions only ─────────── */
 @media (max-width: 760px) {
   :root { --nav-w: 220px; }
   .field-row, .field-row-3 { grid-template-columns: 1fr; }
   .section-panel { padding: 20px 20px 80px; }
+}
+
+/* ─── Mobile layout (<768px) ─────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Hide desktop side nav */
+  #sidenav { display: none !important; }
+
+  /* Main takes full width, add bottom padding for tab bar */
+  #main { padding-bottom: 64px; }
+
+  /* Header: compact icon buttons on mobile */
+  .header-save-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    margin-left: 6px;
+  }
+  .wordmark-sub { display: none; }
+  .wordmark-main { font-size: 16px; }
+  .logo-mark svg { width: 36px; height: 36px; }
+
+  /* All tap targets minimum 44px */
+  .rating-btn { min-height: 44px; padding: 10px 14px; }
+  .state-btn  { min-height: 44px; }
+  .add-btn    { min-height: 44px; }
+}
+
+/* ─── Bottom Tab Bar (mobile only) ──────────────────────────────────── */
+#mobile-tabbar {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  background: #0A1118;
+  border-top: 1px solid #1E2D3D;
+  z-index: 200;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  box-shadow: 0 -2px 16px rgba(0,0,0,0.4);
+}
+@media (max-width: 767px) {
+  #mobile-tabbar { display: flex; }
+}
+#mobile-current-section {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#mobile-current-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+#mobile-menu-btn {
+  background: #1E3A5F;
+  color: var(--accent);
+  border: none;
+  border-radius: 8px;
+  padding: 0 16px;
+  height: 40px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ─── Mobile slide-up section menu ───────────────────────────────────── */
+#mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 300;
+}
+#mobile-menu-overlay.open { display: block; }
+
+#mobile-menu-panel {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #0A1118;
+  border-radius: 16px 16px 0 0;
+  z-index: 301;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+#mobile-menu-panel.open { transform: translateY(0); }
+
+#mobile-menu-panel::-webkit-scrollbar { width: 3px; }
+#mobile-menu-panel::-webkit-scrollbar-thumb { background: #1E3A5F; }
+
+.mob-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid #1E2D3D;
+  position: sticky;
+  top: 0;
+  background: #0A1118;
+  z-index: 1;
+}
+.mob-menu-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--descriptor);
+}
+.mob-menu-close {
+  background: #1E3A5F;
+  color: var(--accent);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+.mob-menu-zone {
+  padding: 10px 20px 4px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--descriptor);
+  border-top: 1px solid #1E2D3D;
+}
+.mob-menu-zone:first-of-type { border-top: none; }
+.mob-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  min-height: 52px;
+  border-bottom: 1px solid #111D28;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.mob-menu-item:active { background: #111D28; }
+.mob-menu-item-num {
+  font-size: 10px;
+  color: var(--secondary);
+  min-width: 22px;
+  font-weight: 600;
+}
+.mob-menu-item-label {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text-dark);
+  line-height: 1.3;
+}
+.mob-menu-item-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Camera viewfinder modal ────────────────────────────────────────── */
+#camera-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 500;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#camera-modal.open { display: flex; }
+
+#camera-video {
+  width: 100%;
+  max-width: 600px;
+  max-height: calc(100vh - 160px);
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+#camera-cancel-btn {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+#camera-capture-btn {
+  position: absolute;
+  bottom: 40px;
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: white;
+  border: 4px solid rgba(255,255,255,0.5);
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  transition: transform 0.1s;
+}
+#camera-capture-btn:active { transform: scale(0.93); }
+#camera-capture-btn::after {
+  content: "";
+  display: block;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #ccc;
+  margin: auto;
+  margin-top: 6px;
+}
+
+/* ─── Two-button photo upload area ───────────────────────────────────── */
+.photo-upload-area {
+  /* override: not a single click target anymore — child buttons handle it */
+  cursor: default;
+}
+.photo-upload-area:hover {
+  border-color: var(--border);
+  background: #F9FBFD;
+}
+.photo-btn-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+}
+.photo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 7px;
+  border: 1.5px solid var(--border);
+  background: white;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--secondary);
+  cursor: pointer;
+  transition: all 0.13s;
+  min-height: 40px;
+}
+.photo-btn:hover {
+  border-color: var(--accent-light);
+  color: var(--accent-light);
+  background: #EEF5FB;
+}
+.photo-btn-take { border-color: var(--accent); color: var(--accent); }
+.photo-btn-take:hover { background: var(--accent); color: var(--primary); }
+
+/* ─── iOS save hint ──────────────────────────────────────────────────── */
+#ios-save-hint {
+  display: none;
+  font-size: 11px;
+  color: var(--secondary);
+  margin-top: 4px;
+  text-align: center;
 }
 
 /* ─── Access Limitation Panel ────────────────────────────────────────── */
@@ -945,9 +1221,43 @@ html, body {
     <div class="header-report-date" id="header-report-date">—</div>
   </div>
 
-  <button class="header-save-btn" onclick="saveInspection()">Save JSON</button>
-  <button class="header-save-btn" style="background:#1E3A5F;color:var(--accent);margin-left:0;" onclick="triggerLoadInspection()">Load JSON</button>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+    <div style="display:flex;gap:6px">
+      <button class="header-save-btn" onclick="saveInspection()" id="save-json-btn">Save JSON</button>
+      <button class="header-save-btn" style="background:#1E3A5F;color:var(--accent);margin-left:0;" onclick="triggerLoadInspection()">Load JSON</button>
+    </div>
+    <span id="ios-save-hint">Tap Save JSON then share to Files</span>
+  </div>
   <input type="file" accept=".json,application/json" id="load-inspection-input" style="display:none" onchange="handleLoadInspection(event)">
+</div>
+
+<!-- ═══ CAMERA MODAL ═════════════════════════════════════════════════════ -->
+<div id="camera-modal">
+  <button id="camera-cancel-btn" onclick="closeCamera()" aria-label="Cancel">✕</button>
+  <video id="camera-video" autoplay playsinline muted></video>
+  <button id="camera-capture-btn" onclick="captureFromCamera()" aria-label="Take photo"></button>
+</div>
+
+<!-- ═══ MOBILE NAV OVERLAY + PANEL ════════════════════════════════════════ -->
+<div id="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+<div id="mobile-menu-panel">
+  <div class="mob-menu-header">
+    <span class="mob-menu-title">Sections</span>
+    <button class="mob-menu-close" onclick="closeMobileMenu()">Done</button>
+  </div>
+  <div id="mob-menu-body">
+    <!-- Populated by JS init -->
+  </div>
+</div>
+
+<!-- ═══ MOBILE BOTTOM TAB BAR ══════════════════════════════════════════════ -->
+<div id="mobile-tabbar">
+  <div>
+    <div id="mobile-current-section" style="font-size:13px;font-weight:700;color:var(--text-dark)">Property Details</div>
+    <div id="mobile-current-section-sub" style="font-size:10px;color:var(--secondary);margin-top:1px">Zone 1 · Section 01</div>
+  </div>
+  <span id="mobile-current-badge" class="nav-item-badge badge-not_started">○</span>
+  <button id="mobile-menu-btn" onclick="openMobileMenu()">☰ Sections</button>
 </div>
 
 <!-- ═══ LAYOUT ════════════════════════════════════════════════════════════ -->
@@ -1231,33 +1541,45 @@ html, body {
         <div class="elevation-grid">
           <div class="elevation-item" id="elev-N">
             <div class="elevation-label">NORTH ELEVATION</div>
-            <div class="elevation-upload" onclick="triggerElevPhoto('N')">
+            <div class="elevation-upload" style="cursor:default">
               <div style="font-size:24px;color:var(--border)">📷</div>
-              <p>Tap to add photo</p>
+              <div class="photo-btn-row" style="margin-top:8px">
+                <button class="photo-btn photo-btn-take" onclick="triggerElevCamera('N')" type="button">📷 Take</button>
+                <button class="photo-btn" onclick="currentElevDirection='N';document.getElementById('elev-file-input').click()" type="button">🖼 Choose</button>
+              </div>
             </div>
             <img class="elevation-preview" id="elev-prev-N" alt="North elevation">
           </div>
           <div class="elevation-item" id="elev-S">
             <div class="elevation-label">SOUTH ELEVATION</div>
-            <div class="elevation-upload" onclick="triggerElevPhoto('S')">
+            <div class="elevation-upload" style="cursor:default">
               <div style="font-size:24px;color:var(--border)">📷</div>
-              <p>Tap to add photo</p>
+              <div class="photo-btn-row" style="margin-top:8px">
+                <button class="photo-btn photo-btn-take" onclick="triggerElevCamera('S')" type="button">📷 Take</button>
+                <button class="photo-btn" onclick="currentElevDirection='S';document.getElementById('elev-file-input').click()" type="button">🖼 Choose</button>
+              </div>
             </div>
             <img class="elevation-preview" id="elev-prev-S" alt="South elevation">
           </div>
           <div class="elevation-item" id="elev-E">
             <div class="elevation-label">EAST ELEVATION</div>
-            <div class="elevation-upload" onclick="triggerElevPhoto('E')">
+            <div class="elevation-upload" style="cursor:default">
               <div style="font-size:24px;color:var(--border)">📷</div>
-              <p>Tap to add photo</p>
+              <div class="photo-btn-row" style="margin-top:8px">
+                <button class="photo-btn photo-btn-take" onclick="triggerElevCamera('E')" type="button">📷 Take</button>
+                <button class="photo-btn" onclick="currentElevDirection='E';document.getElementById('elev-file-input').click()" type="button">🖼 Choose</button>
+              </div>
             </div>
             <img class="elevation-preview" id="elev-prev-E" alt="East elevation">
           </div>
           <div class="elevation-item" id="elev-W">
             <div class="elevation-label">WEST ELEVATION</div>
-            <div class="elevation-upload" onclick="triggerElevPhoto('W')">
+            <div class="elevation-upload" style="cursor:default">
               <div style="font-size:24px;color:var(--border)">📷</div>
-              <p>Tap to add photo</p>
+              <div class="photo-btn-row" style="margin-top:8px">
+                <button class="photo-btn photo-btn-take" onclick="triggerElevCamera('W')" type="button">📷 Take</button>
+                <button class="photo-btn" onclick="currentElevDirection='W';document.getElementById('elev-file-input').click()" type="button">🖼 Choose</button>
+              </div>
             </div>
             <img class="elevation-preview" id="elev-prev-W" alt="West elevation">
           </div>
@@ -1383,9 +1705,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s4-cladding-notes" placeholder="Describe condition, age, visible defects, areas not assessed" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s4-cladding')">
+        <div class="photo-upload-area">
           <div class="photo-upload-icon">📷</div>
           <p>Add photo — required for M, R, X ratings</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s4-cladding')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s4-cladding')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s4-cladding-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s4-cladding-file" style="display:none" onchange="handlePhotoUpload(event,'s4-cladding')">
@@ -1402,8 +1728,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s4-flashings-notes" placeholder="Ridge, valley, penetration, skylight, chimney flashings — condition and material" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s4-flashings')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s4-flashings')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s4-flashings')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s4-flashings-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s4-flashings-file" style="display:none" onchange="handlePhotoUpload(event,'s4-flashings')">
@@ -1433,8 +1764,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s4-gutters-notes" placeholder="Blockages, damage, falls, joints, downpipe condition and connections" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s4-gutters')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s4-gutters')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s4-gutters')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s4-gutters-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s4-gutters-file" style="display:none" onchange="handlePhotoUpload(event,'s4-gutters')">
@@ -1451,8 +1787,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s4-fascia-notes" placeholder="Material, condition, rot, paint, damage, vents" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s4-fascia')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s4-fascia')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s4-fascia')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s4-fascia-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s4-fascia-file" style="display:none" onchange="handlePhotoUpload(event,'s4-fascia')">
@@ -1469,8 +1810,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s4-skylights-notes" placeholder="Type, number, flashings, glazing condition — or mark N/A if none present" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s4-skylights')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s4-skylights')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s4-skylights')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s4-skylights-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s4-skylights-file" style="display:none" onchange="handlePhotoUpload(event,'s4-skylights')">
@@ -1486,8 +1832,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s4-chimneys-notes" placeholder="Material, flashings, mortar, capping, lead flashing — or mark N/A if none" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s4-chimneys')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s4-chimneys')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s4-chimneys')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s4-chimneys-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s4-chimneys-file" style="display:none" onchange="handlePhotoUpload(event,'s4-chimneys')">
@@ -1503,8 +1854,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s4-solar-notes" placeholder="Penetration flashings, fixings, general condition — or mark N/A if none present" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s4-solar')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s4-solar')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s4-solar')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s4-solar-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s4-solar-file" style="display:none" onchange="handlePhotoUpload(event,'s4-solar')">
@@ -1555,8 +1911,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s5-framing-notes" placeholder="Rafters, purlins, ridge board, strutting — condition, notching, damage, bowing" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s5-framing')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s5-framing')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s5-framing')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s5-framing-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s5-framing-file" style="display:none" onchange="handlePhotoUpload(event,'s5-framing')">
@@ -1572,8 +1933,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s5-underlay-notes" placeholder="Present / absent, type, condition, tears, laps, sagging" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s5-underlay')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s5-underlay')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s5-underlay')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s5-underlay-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s5-underlay-file" style="display:none" onchange="handlePhotoUpload(event,'s5-underlay')">
@@ -1604,8 +1970,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s5-insulation-notes" placeholder="Coverage, depth, condition, gaps, compression, displacement" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s5-insulation')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s5-insulation')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s5-insulation')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s5-insulation-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s5-insulation-file" style="display:none" onchange="handlePhotoUpload(event,'s5-insulation')">
@@ -1633,8 +2004,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s5-moisture-notes" placeholder="Staining, mould, active leaks, tide marks, condensation evidence — location and extent" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s5-moisture')">
-          <div class="photo-upload-icon">📷</div><p>Add photo — required for any moisture evidence</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo — required for any moisture evidence</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s5-moisture')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s5-moisture')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s5-moisture-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s5-moisture-file" style="display:none" onchange="handlePhotoUpload(event,'s5-moisture')">
@@ -1650,8 +2026,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s5-wiring-notes" placeholder="Type visible, condition, unclipped runs, junction boxes, any concerns" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s5-wiring')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s5-wiring')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s5-wiring')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s5-wiring-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s5-wiring-file" style="display:none" onchange="handlePhotoUpload(event,'s5-wiring')">
@@ -1667,8 +2048,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s5-pests-notes" placeholder="Rodent droppings, bird nesting, insect activity, borer frass — location and extent" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s5-pests')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s5-pests')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s5-pests')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s5-pests-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s5-pests-file" style="display:none" onchange="handlePhotoUpload(event,'s5-pests')">
@@ -1716,8 +2102,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s6-cladding-notes" placeholder="Overall condition, damage, cracking, paint, fixings, gaps" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s6-cladding')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s6-cladding')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s6-cladding')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s6-cladding-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s6-cladding-file" style="display:none" onchange="handlePhotoUpload(event,'s6-cladding')">
@@ -1733,8 +2124,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s6-sealants-notes" placeholder="Joint sealant condition, cracking, shrinkage, failure locations" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s6-sealants')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s6-sealants')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s6-sealants')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s6-sealants-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s6-sealants-file" style="display:none" onchange="handlePhotoUpload(event,'s6-sealants')">
@@ -1750,8 +2146,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s6-headflashings-notes" placeholder="Present above openings, condition, kick-out, integration with cladding" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s6-headflashings')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s6-headflashings')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s6-headflashings')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s6-headflashings-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s6-headflashings-file" style="display:none" onchange="handlePhotoUpload(event,'s6-headflashings')">
@@ -1767,8 +2168,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s6-directfixed-notes" placeholder="If EIFS / monolithic plaster present — direct fixed or drained, age, risk indicators, testing recommendation. Mark N/A if not applicable." oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s6-directfixed')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s6-directfixed')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s6-directfixed')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s6-directfixed-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s6-directfixed-file" style="display:none" onchange="handlePhotoUpload(event,'s6-directfixed')">
@@ -1784,8 +2190,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s6-paint-notes" placeholder="Peeling, chalking, blistering, bare timber, recoat due" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s6-paint')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s6-paint')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s6-paint')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s6-paint-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s6-paint-file" style="display:none" onchange="handlePhotoUpload(event,'s6-paint')">
@@ -1801,8 +2212,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s6-vents-notes" placeholder="Present, clear of obstruction, mesh intact, integrated with cladding" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s6-vents')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s6-vents')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s6-vents')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s6-vents-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s6-vents-file" style="display:none" onchange="handlePhotoUpload(event,'s6-vents')">
@@ -1845,8 +2261,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s7-windows-notes" placeholder="Frame condition, paint, corrosion, damage, sill drainage" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s7-windows')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s7-windows')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s7-windows')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s7-windows-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s7-windows-file" style="display:none" onchange="handlePhotoUpload(event,'s7-windows')">
@@ -1862,8 +2283,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s7-doors-notes" placeholder="Frame condition, threshold, sill, weather seals — exterior assessment" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s7-doors')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s7-doors')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s7-doors')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s7-doors-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s7-doors-file" style="display:none" onchange="handlePhotoUpload(event,'s7-doors')">
@@ -1879,8 +2305,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s7-headflash-notes" placeholder="Head flashings present and integrated above all openings, condition, kick-out" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s7-headflash')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s7-headflash')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s7-headflash')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s7-headflash-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s7-headflash-file" style="display:none" onchange="handlePhotoUpload(event,'s7-headflash')">
@@ -1924,8 +2355,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s8-foundation-notes" placeholder="Foundation condition, cracking, movement, settlement, pile condition" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s8-foundation')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s8-foundation')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s8-foundation')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s8-foundation-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s8-foundation-file" style="display:none" onchange="handlePhotoUpload(event,'s8-foundation')">
@@ -1941,8 +2377,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s8-bearers-notes" placeholder="Bearer and joist condition, rot, borer, notching, bearing, connections" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s8-bearers')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s8-bearers')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s8-bearers')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s8-bearers-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s8-bearers-file" style="display:none" onchange="handlePhotoUpload(event,'s8-bearers')">
@@ -1958,8 +2399,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s8-ventilation-notes" placeholder="Vents present, cross-ventilation adequate, blocked vents, airflow observation" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s8-ventilation')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s8-ventilation')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s8-ventilation')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s8-ventilation-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s8-ventilation-file" style="display:none" onchange="handlePhotoUpload(event,'s8-ventilation')">
@@ -1975,8 +2421,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s8-moisture-notes" placeholder="Ground moisture, ponding, drainage falls, ground clearance to timber, DPC present" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s8-moisture')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s8-moisture')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s8-moisture')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s8-moisture-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s8-moisture-file" style="display:none" onchange="handlePhotoUpload(event,'s8-moisture')">
@@ -1992,8 +2443,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s8-insulation-notes" placeholder="Type, coverage, condition, foil / batts, fixed or loose, fallen sections" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s8-insulation')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s8-insulation')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s8-insulation')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s8-insulation-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s8-insulation-file" style="display:none" onchange="handlePhotoUpload(event,'s8-insulation')">
@@ -2021,8 +2477,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s9-drainage-notes" placeholder="Ground falls away from building, ponding areas, drainage channels, soakage" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s9-drainage')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s9-drainage')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s9-drainage')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s9-drainage-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s9-drainage-file" style="display:none" onchange="handlePhotoUpload(event,'s9-drainage')">
@@ -2038,8 +2499,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s9-retaining-notes" placeholder="Material, height, condition, drainage, movement, consent status — or mark N/A if none present" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s9-retaining')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s9-retaining')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s9-retaining')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s9-retaining-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s9-retaining-file" style="display:none" onchange="handlePhotoUpload(event,'s9-retaining')">
@@ -2055,8 +2521,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s9-driveway-notes" placeholder="Material, condition, cracking, trip hazards, steps, surface drainage" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s9-driveway')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s9-driveway')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s9-driveway')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s9-driveway-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s9-driveway-file" style="display:none" onchange="handlePhotoUpload(event,'s9-driveway')">
@@ -2072,8 +2543,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s9-fencing-notes" placeholder="Material, condition, pool fencing compliance if applicable" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s9-fencing')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s9-fencing')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s9-fencing')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s9-fencing-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s9-fencing-file" style="display:none" onchange="handlePhotoUpload(event,'s9-fencing')">
@@ -2089,8 +2565,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s9-stormwater-notes" placeholder="Gully traps visible and clear, downpipe connections, surface drainage outlets" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s9-stormwater')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s9-stormwater')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s9-stormwater')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s9-stormwater-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s9-stormwater-file" style="display:none" onchange="handlePhotoUpload(event,'s9-stormwater')">
@@ -2156,8 +2637,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s10-water-notes" placeholder="Pressure observation, pipe condition, toby condition, any concerns" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s10-water')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s10-water')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s10-water')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s10-water-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s10-water-file" style="display:none" onchange="handlePhotoUpload(event,'s10-water')">
@@ -2192,8 +2678,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s10-hwc-notes" placeholder="Cylinder condition, PRV, drip tray, strapping (seismic), location, age indicator" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s10-hwc')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s10-hwc')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s10-hwc')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s10-hwc-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s10-hwc-file" style="display:none" onchange="handlePhotoUpload(event,'s10-hwc')">
@@ -2309,9 +2800,14 @@ html, body {
             <label class="field-label">Findings / Notes</label>
             <textarea class="field-textarea" id="s10-gas-notes" placeholder="Bottle condition, bracket / securing, regulator age, pipe condition, compliance plate, any gas odour or concerns" oninput="autosave()" rows="2"></textarea>
           </div>
-          <div class="photo-upload-area" onclick="triggerPhotoUpload('s10-gas')">
-            <div class="photo-upload-icon">📷</div><p>Add photo — photograph bottles, regulator, and piping</p>
+          <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo — photograph bottles, regulator, and piping</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s10-gas')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s10-gas')" type="button">🖼 Choose Photo</button>
           </div>
+        </div>
           <div class="photo-grid" id="s10-gas-photos"></div>
           <input type="file" accept="image/*" capture="environment" id="s10-gas-file" style="display:none" onchange="handlePhotoUpload(event,'s10-gas')">
         </div>
@@ -2366,8 +2862,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s11-board-notes" placeholder="Board condition, labelling, overcrowding, double-tapping, corrosion, any concerns" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s11-board')">
-          <div class="photo-upload-icon">📷</div><p>Add photo — photograph switchboard interior</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo — photograph switchboard interior</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s11-board')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s11-board')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s11-board-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s11-board-file" style="display:none" onchange="handlePhotoUpload(event,'s11-board')">
@@ -2392,8 +2893,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s11-supply-notes" placeholder="Overhead line condition, service entry point, any concerns" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s11-supply')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s11-supply')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s11-supply')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s11-supply-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s11-supply-file" style="display:none" onchange="handlePhotoUpload(event,'s11-supply')">
@@ -2420,8 +2926,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s11-wiring-notes" placeholder="Visible wiring condition, unclipped runs, exposed wiring, any concerns" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s11-wiring')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s11-wiring')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s11-wiring')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s11-wiring-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s11-wiring-file" style="display:none" onchange="handlePhotoUpload(event,'s11-wiring')">
@@ -2479,8 +2990,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s12-borer-notes" placeholder="Flight holes observed — location, extent, species type if determinable, active or old evidence" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s12-borer')">
-          <div class="photo-upload-icon">📷</div><p>Add photo — photograph flight holes and frass</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo — photograph flight holes and frass</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s12-borer')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s12-borer')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s12-borer-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s12-borer-file" style="display:none" onchange="handlePhotoUpload(event,'s12-borer')">
@@ -2496,8 +3012,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s12-rodents-notes" placeholder="Droppings, gnaw marks, entry points, nesting material — location and extent" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s12-rodents')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s12-rodents')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s12-rodents')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s12-rodents-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s12-rodents-file" style="display:none" onchange="handlePhotoUpload(event,'s12-rodents')">
@@ -2513,8 +3034,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s12-mould-notes" placeholder="Location, extent, likely cause (condensation / water ingress), surface or penetrating" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s12-mould')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s12-mould')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s12-mould')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s12-mould-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s12-mould-file" style="display:none" onchange="handlePhotoUpload(event,'s12-mould')">
@@ -2540,8 +3066,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s12-acm-notes" placeholder="Materials identified or suspected — location, condition, disturbance risk. Note: visual identification only — testing required for confirmation." oninput="autosave()" rows="3"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s12-acm')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s12-acm')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s12-acm')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s12-acm-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s12-acm-file" style="display:none" onchange="handlePhotoUpload(event,'s12-acm')">
@@ -2587,8 +3118,13 @@ html, body {
           <label class="field-label">Findings / Notes</label>
           <textarea class="field-textarea" id="s12-hazards-notes" placeholder="Any other identified safety hazards not captured above — structural, electrical, chemical, biological, trip/fall" oninput="autosave()" rows="2"></textarea>
         </div>
-        <div class="photo-upload-area" onclick="triggerPhotoUpload('s12-hazards')">
-          <div class="photo-upload-icon">📷</div><p>Add photo</p>
+        <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('s12-hazards')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('s12-hazards')" type="button">🖼 Choose Photo</button>
+          </div>
         </div>
         <div class="photo-grid" id="s12-hazards-photos"></div>
         <input type="file" accept="image/*" capture="environment" id="s12-hazards-file" style="display:none" onchange="handlePhotoUpload(event,'s12-hazards')">
@@ -2809,6 +3345,10 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("change", updateS1Progress);
   });
   updateS1Progress();
+
+  // Mobile nav init (runs after DOM ready; safe to call on desktop too)
+  initMobileNav();
+  updateMobileTabBar("s1");
 });
 
 // ─── Section Navigation ─────────────────────────────────────────────────
@@ -2823,6 +3363,9 @@ function showSection(id) {
 
   // Scroll main to top
   document.getElementById("main").scrollTop = 0;
+
+  // Update mobile tab bar
+  updateMobileTabBar(id);
 }
 
 // ─── Section State Bar Builder ──────────────────────────────────────────
@@ -2877,6 +3420,15 @@ function setSectionState(sectionId, state, clickedBtn) {
 }
 
 function updateNavBadge(sectionId, state) {
+  // Also mirror to mobile menu badge if it exists
+  const mobBadge = document.getElementById("mob-badge-" + sectionId);
+  if (mobBadge) {
+    const cfg = INSPECTKIT_CONFIG;
+    const stateObj = (cfg.sectionStates || []).find(s => s.code === state);
+    const icon = stateObj ? stateObj.icon : "○";
+    mobBadge.textContent = icon;
+    mobBadge.className = "mob-menu-item-badge badge-" + state;
+  }
   const badge = document.getElementById("badge-" + sectionId);
   if (!badge) return;
   const labels = {
@@ -3252,10 +3804,14 @@ function buildRoomPanelHTML(room, sId) {
         <label class="field-label">Notes</label>
         <textarea class="field-textarea" id="${sId}-floorlevel-notes" placeholder="Bounce, movement, slope direction, any noticeable unevenness" oninput="autosave()" rows="2"></textarea>
       </div>
-      <div class="photo-upload-area" onclick="triggerPhotoUpload('${sId}-floorlevel')">
-        <div class="photo-upload-icon">📷</div>
-        <p>Photograph device display at this location</p>
-      </div>
+      <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Photograph device display at this location</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('${sId}-floorlevel')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('${sId}-floorlevel')" type="button">🖼 Choose Photo</button>
+          </div>
+        </div>
       <div class="photo-grid" id="${sId}-floorlevel-photos"></div>
       <input type="file" accept="image/*" capture="environment" id="${sId}-floorlevel-file" style="display:none" onchange="handlePhotoUpload(event,'${sId}-floorlevel')">
       <p style="font-size:11px;color:var(--secondary);margin-top:8px;">Skip if floor level tool not used in this room.</p>
@@ -3291,10 +3847,14 @@ function buildRoomElement(sId, elemId, title, hint, textOnly=false) {
           rows="2"></textarea>
       </div>
       ${!textOnly ? `
-      <div class="photo-upload-area" onclick="triggerPhotoUpload('${fullId}')">
-        <div class="photo-upload-icon">📷</div>
-        <p>Tap to add photo — required for M, R, and X rated elements</p>
-      </div>
+      <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Tap to add photo — required for M, R, and X rated elements</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('${fullId}')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('${fullId}')" type="button">🖼 Choose Photo</button>
+          </div>
+        </div>
       <div class="photo-grid" id="${fullId}-photos"></div>
       <input type="file" accept="image/*" capture="environment" id="${fullId}-file" style="display:none"
         onchange="handlePhotoUpload(event, '${fullId}')">
@@ -3485,8 +4045,121 @@ function handleElevPhoto(event) {
   event.target.value = "";
 }
 
+// ─── Camera state ─────────────────────────────────────────────────────
+let _cameraElemId    = null;  // elemId currently being photographed
+let _cameraStream    = null;  // active MediaStream
+let _cameraIsElev    = false; // true if shooting elevation (different handler)
+
+// ─── Photo upload: two-button version ─────────────────────────────────
+// Called from static "Take Photo" buttons rendered alongside each upload area.
+function triggerCameraOrFile(elemId) {
+  // Try getUserMedia. On failure or desktop fallback, use file picker.
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    document.getElementById(elemId + "-file").click();
+    return;
+  }
+  _cameraElemId = elemId;
+  _cameraIsElev = false;
+  openCamera();
+}
+
 function triggerPhotoUpload(elemId) {
+  // "Choose Photo" path — file picker only
   document.getElementById(elemId + "-file").click();
+}
+
+// Elevation photo camera trigger
+function triggerElevCamera(dir) {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    document.getElementById("elev-file-input").click();
+    currentElevDirection = dir;
+    return;
+  }
+  currentElevDirection = dir;
+  _cameraElemId = null;
+  _cameraIsElev = true;
+  openCamera();
+}
+
+// ─── Camera open / close ───────────────────────────────────────────────
+function openCamera() {
+  const modal = document.getElementById("camera-modal");
+  const video = document.getElementById("camera-video");
+  modal.classList.add("open");
+
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
+    .then(stream => {
+      _cameraStream = stream;
+      video.srcObject = stream;
+      video.play();
+    })
+    .catch(() => {
+      // getUserMedia failed (desktop webcam absent, or permission denied)
+      closeCamera();
+      // Fall back to file picker
+      if (_cameraIsElev) {
+        document.getElementById("elev-file-input").click();
+      } else if (_cameraElemId) {
+        document.getElementById(_cameraElemId + "-file").click();
+      }
+    });
+}
+
+function closeCamera() {
+  const modal = document.getElementById("camera-modal");
+  modal.classList.remove("open");
+  if (_cameraStream) {
+    _cameraStream.getTracks().forEach(t => t.stop());
+    _cameraStream = null;
+  }
+  const video = document.getElementById("camera-video");
+  video.srcObject = null;
+}
+
+function captureFromCamera() {
+  const video  = document.getElementById("camera-video");
+  const canvas = document.createElement("canvas");
+  canvas.width  = video.videoWidth  || 1280;
+  canvas.height = video.videoHeight || 720;
+  canvas.getContext("2d").drawImage(video, 0, 0);
+  const dataURL = canvas.toDataURL("image/jpeg", 0.82);
+  closeCamera();
+
+  compressImage(dataURL, compressed => {
+    if (_cameraIsElev) {
+      // Route to elevation handler
+      const dir     = currentElevDirection;
+      const preview = document.getElementById("elev-prev-" + dir);
+      if (preview) {
+        preview.src = compressed;
+        preview.style.display = "block";
+        const uploadArea = preview.previousElementSibling;
+        if (uploadArea) uploadArea.style.display = "none";
+        if (!IK.elevationPhotos) IK.elevationPhotos = {};
+        IK.elevationPhotos[dir] = compressed;
+        autosave();
+      }
+    } else if (_cameraElemId) {
+      // Route to normal photo handler
+      const elemId  = _cameraElemId;
+      const grid    = document.getElementById(elemId + "-photos");
+      const existing = grid ? grid.querySelectorAll(".photo-thumb").length : 0;
+      if (!grid || existing >= 4) return;
+      const photoId = elemId + "-photo-" + Date.now();
+      const div = document.createElement("div");
+      div.className = "photo-thumb";
+      div.id = photoId;
+      div.innerHTML = `
+        <img src="${compressed}" alt="Inspection photo">
+        <button class="photo-remove-btn" onclick="removePhoto('${photoId}')">×</button>
+        <input class="photo-caption-input" type="text" placeholder="Caption (required for M, R, X)" oninput="autosave()">
+      `;
+      grid.appendChild(div);
+      if (!IK.photos) IK.photos = {};
+      IK.photos[photoId] = { data: compressed, elemId };
+      autosave();
+    }
+  });
 }
 
 function handlePhotoUpload(event, elemId) {
@@ -3810,13 +4483,16 @@ function autosave() {
   }, 800);
 }
 
-// ─── Save JSON File ────────────────────────────────────────────────────
+// ─── iOS detection ────────────────────────────────────────────────────
+const IS_IOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+
+// ─── Save JSON File (iOS-aware) ────────────────────────────────────────
 function saveInspection() {
   collectFormData();
 
   const warnings = [];
-  if (!IK.propertyDetails.address)   warnings.push("• Property address is required");
-  if (!IK.propertyDetails.inspDate)  warnings.push("• Inspection date is required");
+  if (!IK.propertyDetails.address)    warnings.push("• Property address is required");
+  if (!IK.propertyDetails.inspDate)   warnings.push("• Inspection date is required");
   if (!IK.propertyDetails.clientName) warnings.push("• Client name is required");
 
   if (warnings.length > 0) {
@@ -3842,13 +4518,38 @@ function saveInspection() {
     ...IK,
   };
 
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement("a");
-  a.href     = url;
-  a.download = `${IK.reportNumber}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+  const jsonStr  = JSON.stringify(exportData, null, 2);
+  const filename = `${IK.reportNumber}.json`;
+  const blob     = new Blob([jsonStr], { type: "application/json" });
+
+  if (IS_IOS && navigator.share) {
+    // iOS Share Sheet — passes file directly to Files / AirDrop / etc.
+    const file = new File([blob], filename, { type: "application/json" });
+    navigator.share({ files: [file], title: filename })
+      .catch(() => {
+        // Share cancelled or failed — fall back to data URI
+        iosFallbackSave(jsonStr, filename);
+      });
+  } else if (IS_IOS) {
+    iosFallbackSave(jsonStr, filename);
+  } else {
+    // Desktop / Android — standard download
+    const url = URL.createObjectURL(blob);
+    const a   = document.createElement("a");
+    a.href     = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+}
+
+function iosFallbackSave(jsonStr, filename) {
+  // Open JSON as a data URI in a new tab — user can long-press → Save to Files
+  const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(jsonStr);
+  const w = window.open(dataUri, "_blank");
+  if (!w) {
+    alert("Could not open save dialog. Please allow pop-ups for this site, or use the Copy button in your browser to save the data.");
+  }
 }
 
 // ─── Load / Resume from JSON ────────────────────────────────────────────
@@ -4116,10 +4817,14 @@ function addMoistureReading() {
       <label class="field-label">Classification</label>
       <div id="${id}-classification" style="padding:10px 14px;border-radius:6px;background:#F4F6F7;font-size:13px;font-weight:600;color:var(--secondary);">Enter reading value above</div>
     </div>
-    <div class="photo-upload-area" onclick="triggerPhotoUpload('${id}')">
-      <div class="photo-upload-icon">📷</div>
-      <p>Photograph meter display at this location</p>
-    </div>
+    <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Photograph meter display at this location</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('${id}')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('${id}')" type="button">🖼 Choose Photo</button>
+          </div>
+        </div>
     <div class="photo-grid" id="${id}-photos"></div>
     <input type="file" accept="image/*" capture="environment" id="${id}-file" style="display:none" onchange="handlePhotoUpload(event,'${id}')">
   `;
@@ -4174,10 +4879,14 @@ function addFloorLevelReading() {
         <input class="field-input" type="number" id="${id}-value" placeholder="0" oninput="calcFloorVariance()">
       </div>
     </div>
-    <div class="photo-upload-area" onclick="triggerPhotoUpload('${id}')">
-      <div class="photo-upload-icon">📷</div>
-      <p>Photograph device display at this location</p>
-    </div>
+    <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Photograph device display at this location</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('${id}')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('${id}')" type="button">🖼 Choose Photo</button>
+          </div>
+        </div>
     <div class="photo-grid" id="${id}-photos"></div>
     <input type="file" accept="image/*" capture="environment" id="${id}-file" style="display:none" onchange="handlePhotoUpload(event,'${id}')">
   `;
@@ -4260,9 +4969,14 @@ function addOutbuilding() {
       <label class="field-label">Notes</label>
       <textarea class="field-textarea" id="${id}-notes" placeholder="General condition notes, consent status, any concerns" oninput="autosave()" rows="2"></textarea>
     </div>
-    <div class="photo-upload-area" onclick="triggerPhotoUpload('${id}')">
-      <div class="photo-upload-icon">📷</div><p>Add photo</p>
-    </div>
+    <div class="photo-upload-area">
+          <div class="photo-upload-icon">📷</div>
+          <p>Add photo</p>
+          <div class="photo-btn-row">
+            <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('${id}')" type="button">📷 Take Photo</button>
+            <button class="photo-btn" onclick="triggerPhotoUpload('${id}')" type="button">🖼 Choose Photo</button>
+          </div>
+        </div>
     <div class="photo-grid" id="${id}-photos"></div>
     <input type="file" accept="image/*" capture="environment" id="${id}-file" style="display:none" onchange="handlePhotoUpload(event,'${id}')">
   `;
@@ -4323,9 +5037,13 @@ function addRoomMoistureReading(sId) {
       </div>
     </div>
     <div id="${id}-classification" style="padding:8px 12px;border-radius:6px;background:#F4F6F7;font-size:13px;font-weight:600;color:var(--secondary);margin-bottom:10px;">Enter reading value above</div>
-    <div class="photo-upload-area" onclick="triggerPhotoUpload('${id}')" style="margin-top:0;">
+    <div class="photo-upload-area">
       <div class="photo-upload-icon">📷</div>
       <p>Photograph meter display at this location</p>
+      <div class="photo-btn-row">
+        <button class="photo-btn photo-btn-take" onclick="triggerCameraOrFile('${id}')" type="button">📷 Take Photo</button>
+        <button class="photo-btn" onclick="triggerPhotoUpload('${id}')" type="button">🖼 Choose Photo</button>
+      </div>
     </div>
     <div class="photo-grid" id="${id}-photos"></div>
     <input type="file" accept="image/*" capture="environment" id="${id}-file" style="display:none" onchange="handlePhotoUpload(event,'${id}')">
@@ -4346,6 +5064,138 @@ function classifyRoomMoisture(id) {
   classEl.style.color      = color;
   classEl.textContent      = `${val} — ${label}  (${cfg.moistureMeterScale})`;
   autosave();
+}
+
+// ─── Mobile Navigation ────────────────────────────────────────────────
+function initMobileNav() {
+  // Show iOS hint if on iOS
+  if (IS_IOS) {
+    const hint = document.getElementById("ios-save-hint");
+    if (hint) hint.style.display = "block";
+  }
+
+  // Build the slide-up menu from the desktop nav items
+  const body = document.getElementById("mob-menu-body");
+  if (!body) return;
+
+  // Clone structure from sidenav
+  const sidenav = document.getElementById("sidenav");
+  if (!sidenav) return;
+
+  let html = "";
+  sidenav.childNodes.forEach(node => {
+    if (node.classList && node.classList.contains("nav-zone-header")) {
+      html += `<div class="mob-menu-zone">${node.textContent}</div>`;
+    } else if (node.classList && node.classList.contains("nav-item")) {
+      const sec  = node.dataset.section;
+      const num  = node.querySelector(".nav-item-num")?.textContent || "";
+      const lbl  = node.querySelector(".nav-item-label")?.textContent || "";
+      const bdg  = node.querySelector(".nav-item-badge");
+      const bdgClass = bdg ? bdg.className.replace("nav-item-badge","mob-menu-item-badge") : "mob-menu-item-badge badge-not_started";
+      const bdgTxt   = bdg ? bdg.textContent : "○";
+      html += `
+        <div class="mob-menu-item" onclick="mobileNavTo('${sec}')">
+          <span class="mob-menu-item-num">${num}</span>
+          <span class="mob-menu-item-label">${lbl}</span>
+          <span class="${bdgClass.trim()}" id="mob-badge-${sec}">${bdgTxt}</span>
+        </div>`;
+    } else if (node.id === "room-nav-list") {
+      // Dynamic room entries — mirror them at menu open time instead
+    }
+  });
+
+  body.innerHTML = html;
+}
+
+function openMobileMenu() {
+  // Sync dynamic room entries and badges before opening
+  syncMobileMenuRooms();
+
+  const overlay = document.getElementById("mobile-menu-overlay");
+  const panel   = document.getElementById("mobile-menu-panel");
+  overlay.classList.add("open");
+  panel.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeMobileMenu() {
+  const overlay = document.getElementById("mobile-menu-overlay");
+  const panel   = document.getElementById("mobile-menu-panel");
+  overlay.classList.remove("open");
+  panel.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function mobileNavTo(sectionId) {
+  closeMobileMenu();
+  showSection(sectionId);
+}
+
+function syncMobileMenuRooms() {
+  // Rebuild room items in the mobile menu to match current room nav
+  const body = document.getElementById("mob-menu-body");
+  if (!body) return;
+
+  // Remove stale room entries
+  body.querySelectorAll(".mob-menu-item[data-is-room]").forEach(el => el.remove());
+  // Remove stale zone headers for zone 2
+  Array.from(body.children).forEach(el => {
+    if (el.classList.contains("mob-menu-zone") && el.textContent.includes("Zone 2")) el.remove();
+  });
+
+  // Re-add zone 2 header + rooms from current IK.rooms
+  const rooms = (IK.rooms || INSPECTKIT_CONFIG.defaultRooms).filter(r => r.active);
+  if (rooms.length === 0) return;
+
+  let zoneDiv = document.createElement("div");
+  zoneDiv.className = "mob-menu-zone";
+  zoneDiv.textContent = "Zone 2 — Room by Room";
+  body.appendChild(zoneDiv);
+
+  rooms.forEach((room, idx) => {
+    const sId = "room-" + room.id;
+    const bdgEl = document.getElementById("badge-" + sId);
+    const bdgClass = bdgEl ? bdgEl.className.replace("nav-item-badge","mob-menu-item-badge") : "mob-menu-item-badge badge-not_started";
+    const bdgTxt   = bdgEl ? bdgEl.textContent : "○";
+
+    const el = document.createElement("div");
+    el.className = "mob-menu-item";
+    el.setAttribute("data-is-room","1");
+    el.setAttribute("onclick", `mobileNavTo('${sId}')`);
+    el.innerHTML = `
+      <span class="mob-menu-item-num">${String(idx + 1).padStart(2,"0")}</span>
+      <span class="mob-menu-item-label">${room.name}</span>
+      <span class="${bdgClass.trim()}" id="mob-badge-${sId}">${bdgTxt}</span>
+    `;
+    el.onclick = () => mobileNavTo(sId);
+    body.appendChild(el);
+  });
+}
+
+// Update mobile tab bar when section changes
+function updateMobileTabBar(sectionId) {
+  // Find label from desktop nav or room list
+  const navItem = document.querySelector(`.nav-item[data-section="${sectionId}"]`);
+  const label = navItem ? navItem.querySelector(".nav-item-label")?.textContent : sectionId;
+  const badge = document.getElementById("badge-" + sectionId);
+
+  const secEl  = document.getElementById("mobile-current-section");
+  const subEl  = document.getElementById("mobile-current-section-sub");
+  const badgeEl = document.getElementById("mobile-current-badge");
+
+  if (secEl && label) secEl.textContent = label;
+
+  // Sub-label: zone + section number
+  if (subEl && navItem) {
+    const num = navItem.querySelector(".nav-item-num")?.textContent || "";
+    const isRoom = sectionId.startsWith("room-");
+    subEl.textContent = isRoom ? "Zone 2 · Room " + num : "Zone 1 · Section " + num;
+  }
+
+  if (badgeEl && badge) {
+    badgeEl.className = badge.className.replace("nav-item-badge","nav-item-badge");
+    badgeEl.textContent = badge.textContent;
+  }
 }
 
 // ─── Room Floor Level Assessment ────────────────────────────────────────
